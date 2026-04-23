@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Экокультура 2026 — платформа экологического просвещения для учителей. Готовые уроки, методические материалы и интерактивные тесты по экологии.">
+    <title>Экокультура 2026 | Экологическое просвещение</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        
+        body { background: #fefcf5; color: #1a3f2c; line-height: 1.6; }
+        
+        /* ===== АНИМАЦИИ ===== */
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+        @keyframes wobble { 0%,100%{transform:rotate(0)} 25%{transform:rotate(5deg)} 75%{transform:rotate(-5deg)} }
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes gradient { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+        @keyframes correctAnswer { 0%{background:#4caf50} 50%{background:#81c784} 100%{background:#4caf50} }
+        @keyframes wrongAnswer { 0%{background:#f44336} 50%{background:#e57373} 100%{background:#f44336} }
+        
+        .animate-fade { animation: fadeIn 0.8s ease-out; }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-pulse { animation: pulse 2s ease-in-out infinite; }
+        
+        /* ===== НАВИГАЦИЯ ===== */
+        .top-nav {
+            background: linear-gradient(135deg, #1e4a2f, #2d5a27);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.2);
+        }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { font-size: 2.5rem; animation: float 3s ease-in-out infinite; }
+        .logo-text h2 { font-size: 1.5rem; }
+        .logo-text p { font-size: 0.75rem; opacity: 0.85; }
+        
+        .nav-links { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+        .nav-links a { color: white; text-decoration: none; font-weight: 500; transition: 0.3s; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: #ffd966; transition: 0.3s; }
+        .nav-links a:hover::after { width: 100%; }
+        
+        .btn { padding: 10px 20px; border: none; border-radius: 30px; cursor: pointer; font-weight: 600; transition: 0.3s; font-size: 0.9rem; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .btn-primary { background: #ffd966; color: #1e4a2f; }
+        .btn-secondary { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); }
+        .btn-success { background: #4caf50; color: white; }
+        .btn-danger { background: #f44336; color: white; }
+        .btn-test { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.15);
+            padding: 8px 15px;
+            border-radius: 25px;
+        }
+        .user-info .badge {
+            background: #ffd966;
+            color: #1e4a2f;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        /* ===== ГЕРО ===== */
+        .hero {
+            background: linear-gradient(-45deg, #c8e6b5, #a5d6a7, #81c784, #66bb6a);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            padding: 60px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; margin: 0 auto; }
+        .hero h1 {
+            font-size: 3rem;
+            background: #1e4a2f;
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 60px;
+            color: white;
+            margin-bottom: 20px;
+            animation: pulse 3s ease-in-out infinite;
+        }
+        .hero p { font-size: 1.4rem; color: #1e3a2a; margin-bottom: 20px; }
+        
+        .animal-strip { display: flex; justify-content: center; gap: 15px; margin-top: 20px; font-size: 3rem; }
+        .animal-strip span { display: inline-block; animation: wobble 3s ease-in-out infinite; }
+        .animal-strip span:nth-child(2) { animation-delay: 0.3s; }
+        .animal-strip span:nth-child(3) { animation-delay: 0.6s; }
+        .animal-strip span:nth-child(4) { animation-delay: 0.9s; }
+        .animal-strip span:nth-child(5) { animation-delay: 1.2s; }
+        .animal-strip span:nth-child(6) { animation-delay: 1.5s; }
+        
+        /* ===== КАРТОЧКИ ===== */
+        .features {
+            max-width: 1200px;
+            margin: -40px auto 40px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            position: relative;
+            z-index: 10;
+        }
+        .feature-card {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: 0.3s;
+            animation: float 4s ease-in-out infinite;
+        }
+        .feature-card:nth-child(2) { animation-delay: 0.3s; }
+        .feature-card:nth-child(3) { animation-delay: 0.6s; }
+        .feature-card:nth-child(4) { animation-delay: 0.9s; }
+        .feature-card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
+        .feature-icon { font-size: 3rem; margin-bottom: 15px; }
+        .feature-card h3 { color: #1e4a2f; margin-bottom: 10px; }
+        .feature-card p { color: #666; margin-bottom: 15px; }
+        
+        /* ===== УРОКИ ===== */
+        .teacher-section { background: #f5fbf0; padding: 40px 20px; }
+        .section-title { text-align: center; font-size: 2rem; color: #1e4a2f; margin-bottom: 15px; }
+        .section-sub { text-align: center; color: #666; margin-bottom: 30px; }
+        
+        .filter-bar {
+            background: white;
+            padding: 15px 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 60px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .filter-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        .filter-btn {
+            background: #eef4e8; border: none; padding: 8px 18px;
+            border-radius: 30px; cursor: pointer; font-weight: 500; transition: 0.3s;
+        }
+        .filter-btn.active { background: #2c6e49; color: white; }
+        .search-box input {
+            padding: 8px 15px; border-radius: 30px; border: 1px solid #c0dbc0;
+            width: 200px; outline: none;
+        }
+        
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .lesson-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            animation: fadeIn 0.6s ease-out;
+        }
+        .lesson-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .lesson-type { 
+            background: #e8f5e9; padding: 5px 12px; border-radius: 15px;
+            font-size: 0.85rem; display: inline-block; margin-bottom: 10px;
+        }
+        .lesson-card h3 { color: #1e4a2f; margin-bottom: 10px; }
+        .lesson-card p { color: #666; margin-bottom: 15px; }
+        .price { font-weight: bold; font-size: 1.2rem; }
+        .price.free { color: #4caf50; }
+        .actions { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+        
+        /* ===== ТЕСТЫ ===== */
+        .test-section { background: #fff; padding: 40px 20px; }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .test-header { text-align: center; margin-bottom: 30px; }
+        .test-timer {
+            font-size: 1.5rem;
+            color: #1e4a2f;
+            font-weight: bold;
+        }
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .question-number {
+            font-weight: bold;
+            color: #1e4a2f;
+            margin-bottom: 10px;
+        }
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        .answer-option {
+            display: block;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .answer-option:hover {
+            border-color: #4caf50;
+            background: #f0f7f0;
+        }
+        .answer-option.selected {
+            border-color: #2196F3;
+            background: #e3f2fd;
+        }
+        .answer-option.correct {
+            border-color: #4caf50;
+            background: #e8f5e9;
+            animation: correctAnswer 1s;
+        }
+        .answer-option.wrong {
+            border-color: #f44336;
+            background: #ffebee;
+            animation: wrongAnswer 1s;
+        }
+        .test-results {
+            text-align: center;
+            padding: 30px;
+        }
+        .test-score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #1e4a2f;
+        }
+        .certificate {
+            background: linear-gradient(135deg, #fff9c4, #fff176);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 20px 0;
+            border: 3px solid #ffd966;
+        }
+        
+        /* ===== ИНФО-БЛОКИ ===== */
+        .info-section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        @media (max-width: 768px) { .info-section { grid-template-columns: 1fr; } }
+        .info-block {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            animation: fadeIn 0.8s ease-out;
+        }
+        .info-block h3 { color: #1e4a2f; font-size: 1.8rem; margin-bottom: 20px; }
+        
+        /* ===== ЧАТ ===== */
+        .chat-widget { position: fixed; bottom: 25px; right: 25px; z-index: 3000; }
+        .chat-button {
+            width: 65px; height: 65px; border-radius: 50%;
+            background: linear-gradient(135deg, #1e4a2f, #2d5a27);
+            color: white; border: none; font-size: 30px;
+            cursor: pointer; box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: 0.3s; animation: pulse 3s ease-in-out infinite;
+        }
+        .chat-window {
+            display: none; position: absolute; bottom: 80px; right: 0;
+            width: 350px; height: 480px; background: white; border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2); flex-direction: column;
+            overflow: hidden; border: 1px solid #e0e0e0;
+        }
+        .chat-window.open { display: flex; animation: fadeIn 0.3s ease-out; }
+        .chat-header {
+            background: linear-gradient(135deg, #1e4a2f, #2d5a27);
+            color: white; padding: 15px; display: flex;
+            justify-content: space-between; align-items: center;
+        }
+        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
+        .message { max-width: 80%; padding: 10px 15px; border-radius: 18px; font-size: 0.9rem; word-wrap: break-word; }
+        .message.user { background: #e8f5e9; align-self: flex-end; }
+        .message.bot { background: white; border: 1px solid #e0e0e0; align-self: flex-start; }
+        .chat-input-area { display: flex; padding: 10px; border-top: 1px solid #e0e0e0; }
+        .chat-input-area input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 25px; outline: none; }
+        .chat-input-area button {
+            background: #1e4a2f; color: white; border: none;
+            width: 45px; height: 45px; border-radius: 50%; margin-left: 8px; cursor: pointer;
+        }
+        
+        /* ===== МОДАЛЬНЫЕ ОКНА ===== */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); justify-content: center; align-items: center;
+            z-index: 2000; backdrop-filter: blur(5px);
+        }
+        .modal.open { display: flex; animation: fadeIn 0.3s ease-out; }
+        .modal-content {
+            background: white; padding: 30px; border-radius: 25px;
+            max-width: 420px; width: 90%; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            max-height: 80vh; overflow-y: auto;
+        }
+        .modal-content h3 { margin-bottom: 20px; color: #1e4a2f; }
+        .modal-content input {
+            width: 100%; padding: 12px; margin-bottom: 15px;
+            border: 1px solid #ddd; border-radius: 10px; outline: none;
+        }
+        .modal-content input:focus { border-color: #4caf50; box-shadow: 0 0 5px rgba(76,175,80,0.3); }
+        .close-btn {
+            float: right; background: none; border: none;
+            font-size: 1.5rem; cursor: pointer; color: #999;
+        }
+        .modal-tabs { display: flex; gap: 15px; margin-bottom: 25px; }
+        .modal-tab {
+            flex: 1; text-align: center; padding: 10px;
+            cursor: pointer; border-bottom: 2px solid transparent;
+            font-weight: 500; transition: 0.3s;
+        }
+        .modal-tab.active { border-bottom-color: #1e4a2f; font-weight: bold; color: #1e4a2f; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-out; }
+        .form-hint { font-size: 0.8rem; color: #999; margin-top: -10px; margin-bottom: 10px; }
+        
+        /* ===== ТОСТЫ ===== */
+        .toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: #1e4a2f; color: white; padding: 12px 25px;
+            border-radius: 30px; z-index: 9999; animation: fadeIn 0.3s ease-out;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3); text-align: center;
+            max-width: 90%;
+        }
+        
+        /* ===== ПОДВАЛ ===== */
+        footer {
+            background: #1e2e24; color: #bcd5aa; text-align: center;
+            padding: 25px; font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1.1rem; }
+            .chat-window { width: 280px; height: 400px; }
+        }
+        
+        .hidden { display: none !important; }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #81c784);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+ 
+<!-- НАВИГАЦИЯ -->
+<div class="top-nav">
+    <div class="logo-area">
+        <div class="logo-icon">🌍</div>
+        <div class="logo-text">
+            <h2>Экокультура 2026</h2>
+            <p>Экологическое просвещение</p>
+        </div>
+    </div>
+    <div class="nav-links">
+        <a href="#home">Главная</a>
+        <a href="#tests">Тесты</a>
+        <a href="#lessons">Занятия</a>
+        <a href="#about">О нас</a>
+        <a href="#contacts">Контакты</a>
+        <span id="authArea">
+            <button class="btn btn-primary" onclick="openAuthModal()">🔐 Войти</button>
+        </span>
+    </div>
+</div>
+ 
+<!-- ГЕРО -->
+<div class="hero" id="home">
+    <div class="hero-content">
+        <h1>🌱 Открой мир экологии</h1>
+        <p>Учись, участвуй, спасай планету вместе с нами!</p>
+        <div class="animal-strip">
+            <span>🦁</span><span>🐘</span><span>🦊</span><span>🦜</span><span>🐢</span><span>🐝</span>
+        </div>
+    </div>
+</div>
+ 
+<!-- 4 КАРТОЧКИ -->
+<div class="features">
+    <div class="feature-card">
+        <div class="feature-icon">🎥</div>
+        <h3>Обучающие видео</h3>
+        <p>Курсы по экологии, переработке и климату</p>
+        <button class="btn btn-secondary" onclick="showToast('🎬 Видео-уроки скоро появятся!')">Смотреть</button>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">📚</div>
+        <h3>Методички</h3>
+        <p>Готовые материалы для проведения уроков</p>
+        <button class="btn btn-secondary" onclick="scrollToLessons()">Скачать</button>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <h3>Тесты</h3>
+        <p>Проверь знания и получи сертификат</p>
+        <button class="btn btn-test" onclick="scrollToTests()">Пройти тест</button>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">🌳</div>
+        <h3>Эко-проекты</h3>
+        <p>Волонтёрство, акции и мероприятия</p>
+        <button class="btn btn-secondary" onclick="showToast('🌍 Следите за новостями!')">Участвовать</button>
+    </div>
+</div>
+ 
+<!-- ТЕСТЫ -->
+<div class="test-section" id="tests">
+    <div class="section-title">📝 Экологические тесты</div>
+    <div class="section-sub">Проверьте свои знания об экологии и получите сертификат!</div>
+    
+    <div class="test-container" id="testContainer">
+        <div class="test-header">
+            <h3 id="testTitle">Выберите тест</h3>
+        </div>
+        
+        <!-- Выбор теста -->
+        <div id="testSelection">
+            <div style="display: grid; gap: 15px;">
+                <button class="btn btn-test" onclick="startTest('eco_basics')" style="width:100%;padding:20px;">
+                    🌍 Основы экологии
+                    <br><small style="opacity:0.8;">10 вопросов о базовых понятиях</small>
+                </button>
+                <button class="btn btn-test" onclick="startTest('recycling')" style="width:100%;padding:20px;">
+                    ♻️ Переработка отходов
+                    <br><small style="opacity:0.8;">10 вопросов о сортировке мусора</small>
+                </button>
+                <button class="btn btn-test" onclick="startTest('climate')" style="width:100%;padding:20px;">
+                    🌡️ Изменение климата
+                    <br><small style="opacity:0.8;">10 вопросов о глобальном потеплении</small>
+                </button>
+                <button class="btn btn-test" onclick="startTest('water')" style="width:100%;padding:20px;">
+                    💧 Водные ресурсы
+                    <br><small style="opacity:0.8;">10 вопросов о сохранении воды</small>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Вопросы теста -->
+        <div id="testQuestions" class="hidden"></div>
+        
+        <!-- Результаты -->
+        <div id="testResults" class="hidden"></div>
+    </div>
+</div>
+ 
+<!-- УРОКИ -->
+<div class="teacher-section" id="lessons">
+    <div class="section-title">🍎 Готовые занятия для учителей</div>
+    <div class="section-sub">Скачивайте бесплатные и платные материалы</div>
+    
+    <div class="filter-bar">
+        <div class="filter-group">
+            <button class="filter-btn active" onclick="filterLessons('all', this)">Все</button>
+            <button class="filter-btn" onclick="filterLessons('free', this)">Бесплатные</button>
+            <button class="filter-btn" onclick="filterLessons('paid', this)">Платные</button>
+            <button class="filter-btn" onclick="filterLessons('методичка', this)">Методички</button>
+            <button class="filter-btn" onclick="filterLessons('презентация', this)">Презентации</button>
+            <button class="filter-btn" onclick="filterLessons('видеоурок', this)">Видеоуроки</button>
+        </div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Поиск..." oninput="searchLessons()">
+        </div>
+        <span id="statsCount" style="font-size:0.85rem;color:#666;"></span>
+    </div>
+    
+    <div class="lessons-grid" id="lessonsGrid"></div>
+</div>
+ 
+<!-- О НАС И КОНТАКТЫ -->
+<div class="info-section" id="about">
+    <div class="info-block">
+        <h3>🌿 О нас</h3>
+        <p>«Экокультура 2026» — сообщество педагогов, экологов и волонтёров. Мы создаём материалы для учителей, чтобы сделать экологическое просвещение увлекательным.</p>
+        <p>Наша миссия — вдохновить миллионы людей заботиться о планете через современные методики и интерактивные проекты.</p>
+    </div>
+    <div class="info-block" id="contacts">
+        <h3>📞 Контакты</h3>
+        <p><strong>Email:</strong> hello@ecocultura.ru</p>
+        <p><strong>Телефон:</strong> 8 (999) 145-29-68</p>
+        <p>Мы всегда рады сотрудничеству!</p>
+    </div>
+</div>
+ 
+<footer>
+    <p>© 2026 Экокультура. Все права защищены.</p>
+    <p>🌍 Экологическое просвещение для учителей и учеников</p>
+</footer>
+ 
+<!-- МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ -->
+<div class="modal" id="authModal">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeAuthModal()">✕</button>
+        
+        <div class="modal-tabs">
+            <div class="modal-tab active" onclick="switchAuthTab('login')">Вход</div>
+            <div class="modal-tab" onclick="switchAuthTab('register')">Регистрация</div>
+        </div>
+        
+        <div class="tab-content active" id="loginTab">
+            <h3>🔐 Вход в аккаунт</h3>
+            <input type="email" id="loginEmail" placeholder="Email">
+            <input type="password" id="loginPassword" placeholder="Пароль">
+            <button class="btn btn-primary" onclick="loginUser()" style="width:100%;">Войти</button>
+            <p style="text-align:center;margin-top:15px;font-size:0.85rem;color:#666;">
+                Нет аккаунта? <a href="#" onclick="switchAuthTab('register')" style="color:#1e4a2f;">Зарегистрируйтесь</a>
+            </p>
+        </div>
+        
+        <div class="tab-content" id="registerTab">
+            <h3>📝 Регистрация</h3>
+            <input type="text" id="regName" placeholder="Ваше имя">
+            <input type="email" id="regEmail" placeholder="Email">
+            <input type="password" id="regPassword" placeholder="Пароль (минимум 6 символов)">
+            <input type="password" id="regPasswordConfirm" placeholder="Подтвердите пароль">
+            <p class="form-hint">🔒 Пароль хранится в зашифрованном виде</p>
+            <button class="btn btn-success" onclick="registerUser()" style="width:100%;">Зарегистрироваться</button>
+            <p style="text-align:center;margin-top:15px;font-size:0.85rem;color:#666;">
+                Уже есть аккаунт? <a href="#" onclick="switchAuthTab('login')" style="color:#1e4a2f;">Войдите</a>
+            </p>
+        </div>
+    </div>
+</div>
+ 
+<!-- ЧАТ-АССИСТЕНТ -->
+<div class="chat-widget">
+    <button class="chat-button" onclick="toggleChat()">💬</button>
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <span>🌿 Эко-Ассистент</span>
+            <button onclick="toggleChat()" style="background:none;border:none;color:white;font-size:20px;cursor:pointer;">✕</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+                👋 Здравствуйте! Я ваш эко-ассистент. Задайте вопрос об экологии, и я постараюсь помочь!
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Ваш вопрос..." onkeypress="if(event.key==='Enter')sendMessage()">
+            <button onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+</div>
+ 
+<script>
+// ============ БАЗА ТЕСТОВ ============
+const testDatabase = {
+    eco_basics: {
+        title: '🌍 Основы экологии',
+        questions: [
+            { question: 'Что такое экология?', options: ['Наука о животных', 'Наука о взаимодействии организмов с окружающей средой', 'Наука о растениях', 'Наука о космосе'], correct: 1 },
+            { question: 'Кто ввел термин "экология"?', options: ['Чарльз Дарвин', 'Эрнст Геккель', 'Владимир Вернадский', 'Альберт Эйнштейн'], correct: 1 },
+            { question: 'Что такое биосфера?', options: ['Водная оболочка Земли', 'Воздушная оболочка Земли', 'Оболочка Земли, населенная живыми организмами', 'Каменная оболочка Земли'], correct: 2 },
+            { question: 'Какой газ преобладает в атмосфере?', options: ['Кислород', 'Азот', 'Углекислый газ', 'Водород'], correct: 1 },
+            { question: 'Что такое экосистема?', options: ['Группа животных', 'Сообщество живых организмов и среда их обитания', 'Лесной массив', 'Популяция вида'], correct: 1 },
+            { question: 'Сколько процентов кислорода производит океан?', options: ['20%', '50-80%', '10%', '90%'], correct: 1 },
+            { question: 'Что такое биоразнообразие?', options: ['Количество людей на планете', 'Разнообразие видов живых организмов', 'Количество стран', 'Разнообразие горных пород'], correct: 1 },
+            { question: 'Какой континент самый богатый по биоразнообразию?', options: ['Европа', 'Азия', 'Южная Америка', 'Австралия'], correct: 2 },
+            { question: 'Что изучает аутэкология?', options: ['Экосистемы', 'Популяции', 'Отдельные организмы', 'Биосферу'], correct: 2 },
+            { question: 'Как назвается сообщество живых организмов на определенной территории?', options: ['Биоценоз', 'Биотоп', 'Популяция', 'Вид'], correct: 0 }
+        ]
+    },
+    recycling: {
+        title: '♻️ Переработка отходов',
+        questions: [
+            { question: 'Сколько процентов отходов можно переработать?', options: ['10-20%', '60-80%', '5%', '100%'], correct: 1 },
+            { question: 'Какая маркировка пластика принимается в переработку?', options: ['1, 2, 4, 5', 'Все маркировки', 'Только 1', '3 и 7'], correct: 0 },
+            { question: 'Сколько разлагается пластиковая бутылка?', options: ['10 лет', '50 лет', '450-1000 лет', '100 лет'], correct: 2 },
+            { question: 'Что нельзя выбрасывать в обычный мусор?', options: ['Бумагу', 'Батарейки', 'Пищевые отходы', 'Картон'], correct: 1 },
+            { question: 'Какой цвет контейнера для стекла (в РФ)?', options: ['Синий', 'Желтый', 'Зеленый', 'Серый'], correct: 2 },
+            { question: 'Сколько бумаги можно получить из 1 тонны макулатуры?', options: ['100 кг', '500 кг', '750 кг', '1000 кг'], correct: 2 },
+            { question: 'Что производят из переработанного пластика?', options: ['Только новые бутылки', 'Одежду, мебель, стройматериалы', 'Еду', 'Лекарства'], correct: 1 },
+            { question: 'Сколько энергии экономит переработка алюминиевой банки?', options: ['10%', '25%', '50%', '95%'], correct: 3 },
+            { question: 'Что такое компостирование?', options: ['Сжигание отходов', 'Захоронение отходов', 'Разложение органики в удобрения', 'Плавление металла'], correct: 2 },
+            { question: 'Как часто можно перерабатывать стекло?', options: ['1 раз', 'До 10 раз', 'Без потери качества бесконечно', '3 раза'], correct: 2 }
+        ]
+    },
+    climate: {
+        title: '🌡️ Изменение климата',
+        questions: [
+            { question: 'Какой основной газ вызывает парниковый эффект?', options: ['Кислород', 'Азот', 'CO2', 'Водород'], correct: 2 },
+            { question: 'На сколько градусов потеплела Земля за последние 100 лет?', options: ['0.1°C', '1°C', '5°C', '10°C'], correct: 1 },
+            { question: 'Какой сектор экономики выбрасывает больше всего CO2?', options: ['Сельское хозяйство', 'Транспорт', 'Энергетика', 'Строительство'], correct: 2 },
+            { question: 'Что такое углеродный след?', options: ['След от угля', 'Количество выбросов CO2 от деятельности человека', 'Отпечаток ноги', 'Загрязнение воды'], correct: 1 },
+            { question: 'Какая страна является крупнейшим эмитентом CO2?', options: ['США', 'Россия', 'Китай', 'Индия'], correct: 2 },
+            { question: 'Что происходит с уровнем океана из-за потепления?', options: ['Понижается', 'Повышается на 3.6 мм/год', 'Не меняется', 'Колеблется случайно'], correct: 1 },
+            { question: 'Какое соглашение регулирует выбросы CO2?', options: ['Киотский протокол', 'Парижское соглашение', 'Монреальский протокол', 'Все перечисленные'], correct: 3 },
+            { question: 'Какая отрасль может стать углеродно-нейтральной первой?', options: ['Авиация', 'Металлургия', 'Электроэнергетика', 'Цементная промышленность'], correct: 2 },
+            { question: 'Что такое "зеленая энергия"?', options: ['Энергия цвета', 'Энергия из возобновляемых источников', 'Энергия из нефти', 'Ядерная энергия'], correct: 1 },
+            { question: 'Какой персональный транспорт самый экологичный?', options: ['Автомобиль на бензине', 'Электромобиль', 'Велосипед', 'Мотоцикл'], correct: 2 }
+        ]
+    },
+    water: {
+        title: '💧 Водные ресурсы',
+        questions: [
+            { question: 'Сколько процентов воды на Земле пресной?', options: ['50%', '25%', '2.5%', '10%'], correct: 2 },
+            { question: 'Сколько литров воды тратится при чистке зубов с открытым краном?', options: ['1 литр', '5 литров', '15 литров', '30 литров'], correct: 2 },
+            { question: 'Что занимает больше всего воды?', options: ['Питье', 'Сельское хозяйство (70%)', 'Промышленность', 'Бытовые нужды'], correct: 1 },
+            { question: 'Сколько воды нужно для производства 1 кг говядины?', options: ['1000 литров', '5000 литров', '15000 литров', '50000 литров'], correct: 2 },
+            { question: 'Что такое "водный след"?', options: ['След на воде', 'Общий объем пресной воды для производства товара', 'Отпечаток', 'Уровень загрязнения'], correct: 1 },
+            { question: 'Какой океан самый большой?', options: ['Атлантический', 'Индийский', 'Тихий', 'Северный Ледовитый'], correct: 2 },
+            { question: 'Сколько людей не имеют доступа к чистой воде?', options: ['100 млн', '500 млн', '2.2 млрд', '5 млрд'], correct: 2 },
+            { question: 'Что такое микропластик в воде?', options: ['Большие куски пластика', 'Частицы пластика менее 5 мм', 'Пластиковые бутылки', 'Рыба из пластика'], correct: 1 },
+            { question: 'Как экономить воду дома?', options: ['Не мыться', 'Использовать посудомоечную машину при полной загрузке', 'Пить меньше', 'Не готовить'], correct: 1 },
+            { question: 'Какая страна имеет самые большие запасы пресной воды?', options: ['США', 'Китай', 'Россия', 'Бразилия'], correct: 2 }
+        ]
+    }
+};
+ 
+// ============ ДАННЫЕ УРОКОВ ============
+const lessonsData = [
+    { id:1, title:"Секреты сортировки мусора", desc:"Методичка с играми для 5-7 классов", type:"методичка", price:0, grade:"5-7 кл", duration:"40 мин" },
+    { id:2, title:"Энергия вокруг нас", desc:"Презентация с анимацией + заметки", type:"презентация", price:199, grade:"7-9 кл", duration:"30 мин" },
+    { id:3, title:"Водные ресурсы планеты", desc:"Видеоурок с тестом и раздаткой", type:"видеоурок", price:0, grade:"5-9 кл", duration:"20+ мин" },
+    { id:4, title:"Лес — лёгкие планеты", desc:"Комплект: презентация + дебаты", type:"презентация", price:299, grade:"6-8 кл", duration:"45 мин" },
+    { id:5, title:"Пластик: друг или враг?", desc:"Видеоурок с экспериментом", type:"видеоурок", price:149, grade:"7-11 кл", duration:"35 мин" },
+    { id:6, title:"Экологический след", desc:"Методичка с калькулятором", type:"методичка", price:0, grade:"8-11 кл", duration:"2 урока" },
+    { id:7, title:"Изменение климата", desc:"Презентация с инфографикой", type:"презентация", price:249, grade:"9-11 кл", duration:"40 мин" },
+    { id:8, title:"Озеленение школы", desc:"Видеоурок + методичка проекта", type:"видеоурок", price:0, grade:"5-9 кл", duration:"25 мин" }
+];
+ 
+// ============ СОСТОЯНИЕ ТЕСТА ============
+let currentTest = null;
+let currentQuestionIndex = 0;
+let userAnswers = [];
+let testTimer = null;
+let testStartTime = null;
+ 
+// ============ ХРАНЕНИЕ ПОЛЬЗОВАТЕЛЕЙ ============
+function getUsers() {
+    try { return JSON.parse(localStorage.getItem('eco_users') || '[]'); }
+    catch(e) { return []; }
+}
+ 
+function saveUsers(users) {
+    localStorage.setItem('eco_users', JSON.stringify(users));
+}
+ 
+function initAdmin() {
+    const users = getUsers();
+    if (!users.find(u => u.role === 'admin')) {
+        const adminHash = hashPassword('123123');
+        users.push({
+            name: 'Администратор',
+            email: 'admin@ecocultura.ru',
+            password: adminHash,
+            role: 'admin',
+            registeredAt: new Date().toISOString()
+        });
+        saveUsers(users);
+    }
+}
+ 
+function hashPassword(password) {
+    let hash = 0;
+    const str = password + 'eco_salt_2026';
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+    }
+    return Math.abs(hash).toString(16);
+}
+ 
+// ============ АВТОРИЗАЦИЯ ============
+let currentUser = null;
+ 
+function loadCurrentUser() {
+    try {
+        const saved = localStorage.getItem('eco_current_user');
+        if (saved) { currentUser = JSON.parse(saved); updateAuthUI(); }
+    } catch(e) {}
+}
+ 
+function saveCurrentUser() {
+    if (currentUser) localStorage.setItem('eco_current_user', JSON.stringify(currentUser));
+    else localStorage.removeItem('eco_current_user');
+}
+ 
+function updateAuthUI() {
+    const authArea = document.getElementById('authArea');
+    if (currentUser) {
+        authArea.innerHTML = `
+            <span class="user-info">
+                👤 ${currentUser.name}
+                ${currentUser.role === 'admin' ? '<span class="badge">Админ</span>' : ''}
+                <button class="btn btn-secondary" onclick="logout()" style="padding:5px 12px;font-size:0.8rem;">Выйти</button>
+            </span>
+        `;
+    } else {
+        authArea.innerHTML = '<button class="btn btn-primary" onclick="openAuthModal()">🔐 Войти</button>';
+    }
+}
+ 
+function openAuthModal() {
+    document.getElementById('authModal').classList.add('open');
+    document.getElementById('loginEmail').value = '';
+    document.getElementById('loginPassword').value = '';
+    document.getElementById('regName').value = '';
+    document.getElementById('regEmail').value = '';
+    document.getElementById('regPassword').value = '';
+    document.getElementById('regPasswordConfirm').value = '';
+    switchAuthTab('login');
+}
+ 
+function closeAuthModal() { document.getElementById('authModal').classList.remove('open'); }
+ 
+function switchAuthTab(tab) {
+    document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    
+    if (tab === 'login') {
+        document.querySelector('.modal-tab:nth-child(1)').classList.add('active');
+        document.getElementById('loginTab').classList.add('active');
+    } else {
+        document.querySelector('.modal-tab:nth-child(2)').classList.add('active');
+        document.getElementById('registerTab').classList.add('active');
+    }
+}
+ 
+function loginUser() {
+    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+    const password = document.getElementById('loginPassword').value;
+    
+    if (!email || !password) { showToast('❌ Заполните все поля'); return; }
+    if (!email.includes('@')) { showToast('❌ Введите корректный email'); return; }
+    
+    const users = getUsers();
+    const user = users.find(u => u.email === email);
+    
+    if (!user) { showToast('❌ Пользователь с таким email не найден'); return; }
+    
+    const passHash = hashPassword(password);
+    if (user.password !== passHash) { showToast('❌ Неверный пароль'); return; }
+    
+    currentUser = { name: user.name, email: user.email, role: user.role };
+    saveCurrentUser();
+    updateAuthUI();
+    closeAuthModal();
+    showToast(`✅ Добро пожаловать, ${user.name}!`);
+    renderLessons();
+}
+ 
+function registerUser() {
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim().toLowerCase();
+    const password = document.getElementById('regPassword').value;
+    const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+    
+    if (!name || !email || !password || !passwordConfirm) { showToast('❌ Заполните все поля'); return; }
+    if (name.length < 2) { showToast('❌ Имя должно содержать минимум 2 символа'); return; }
+    if (!email.includes('@') || !email.includes('.')) { showToast('❌ Введите корректный email'); return; }
+    if (password.length < 6) { showToast('❌ Пароль должен содержать минимум 6 символов'); return; }
+    if (password !== passwordConfirm) { showToast('❌ Пароли не совпадают'); return; }
+    
+    const users = getUsers();
+    if (users.find(u => u.email === email)) { showToast('❌ Пользователь с таким email уже зарегистрирован'); return; }
+    
+    const newUser = {
+        name: name,
+        email: email,
+        password: hashPassword(password),
+        role: 'user',
+        registeredAt: new Date().toISOString(),
+        testResults: []
+    };
+    
+    users.push(newUser);
+    saveUsers(users);
+    
+    showToast('✅ Регистрация успешна! Теперь войдите в свой аккаунт.');
+    
+    switchAuthTab('login');
+    document.getElementById('loginEmail').value = email;
+}
+ 
+function logout() {
+    currentUser = null;
+    saveCurrentUser();
+    updateAuthUI();
+    showToast('👋 Вы вышли из аккаунта');
+    renderLessons();
+}
+ 
+// ============ УРОКИ ============
+let currentFilter = 'all';
+ 
+function renderLessons() {
+    const grid = document.getElementById('lessonsGrid');
+    let filtered = [...lessonsData];
+    
+    if (currentFilter === 'free') filtered = filtered.filter(l => l.price === 0);
+    else if (currentFilter === 'paid') filtered = filtered.filter(l => l.price > 0);
+    else if (currentFilter !== 'all') filtered = filtered.filter(l => l.type === currentFilter);
+    
+    const search = document.getElementById('searchInput')?.value?.toLowerCase() || '';
+    if (search) filtered = filtered.filter(l => l.title.toLowerCase().includes(search) || l.desc.toLowerCase().includes(search));
+    
+    document.getElementById('statsCount').textContent = `Показано: ${filtered.length} из ${lessonsData.length}`;
+    
+    const icons = { методичка:'📖', презентация:'📊', видеоурок:'🎬' };
+    const isAdmin = currentUser && currentUser.role === 'admin';
+    
+    grid.innerHTML = filtered.map(l => `
+        <div class="lesson-card">
+            <span class="lesson-type">${icons[l.type] || '📁'} ${l.type}</span>
+            <h3>${l.title}</h3>
+            <p>${l.desc}</p>
+            <p style="font-size:0.85rem;color:#999;">🎓 ${l.grade} ⏱ ${l.duration}</p>
+            <p class="price ${l.price === 0 ? 'free' : ''}">${l.price === 0 ? 'Бесплатно' : l.price + ' ₽'}</p>
+            <div class="actions">
+                <button class="btn btn-primary" onclick="downloadLesson(${l.id})">
+                    ${l.price === 0 ? '📥 Скачать' : isAdmin ? '📥 Скачать (Админ)' : '💰 Купить'}
+                </button>
+                <button class="btn btn-secondary" onclick="showToast('👁 Предпросмотр: ${l.title}')">👁 Превью</button>
+            </div>
+        </div>
+    `).join('');
+}
+ 
+function filterLessons(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderLessons();
+}
+ 
+function searchLessons() { renderLessons(); }
+ 
+function downloadLesson(id) {
+    if (!currentUser) {
+        showToast('❌ Для скачивания необходимо войти в аккаунт');
+        openAuthModal();
+        return;
+    }
+    
+    const lesson = lessonsData.find(l => l.id === id);
+    if (!lesson) return;
+    
+    if (lesson.price === 0 || currentUser.role === 'admin') {
+        showToast(`📥 Скачивание: "${lesson.title}" началось!`);
+    } else {
+        showToast(`💰 Стоимость: ${lesson.price} ₽. Для покупки свяжитесь с администратором.`);
+    }
+}
+ 
+// ============ ТЕСТЫ ============
+function startTest(testKey) {
+    if (!currentUser) {
+        showToast('❌ Для прохождения теста необходимо войти в аккаунт');
+        openAuthModal();
+        return;
+    }
+    
+    currentTest = testKey;
+    currentQuestionIndex = 0;
+    userAnswers = [];
+    testStartTime = Date.now();
+    
+    const test = testDatabase[testKey];
+    
+    document.getElementById('testTitle').textContent = test.title;
+    document.getElementById('testSelection').classList.add('hidden');
+    document.getElementById('testResults').classList.add('hidden');
+    document.getElementById('testQuestions').classList.remove('hidden');
+    
+    showQuestion();
+    startTimer();
+}
+ 
+function showQuestion() {
+    const test = testDatabase[currentTest];
+    const question = test.questions[currentQuestionIndex];
+    const container = document.getElementById('testQuestions');
+    
+    const progress = ((currentQuestionIndex) / test.questions.length) * 100;
+    
+    container.innerHTML = `
+        <div class="progress-bar">
+            <div class="progress-fill" style="width:${progress}%"></div>
+        </div>
+        <p style="text-align:center;color:#666;">Вопрос ${currentQuestionIndex + 1} из ${test.questions.length}</p>
+        
+        <div class="question-block">
+            <div class="question-number">Вопрос ${currentQuestionIndex + 1}</div>
+            <div class="question-text">${question.question}</div>
+            
+            ${question.options.map((opt, i) => `
+                <div class="answer-option ${userAnswers[currentQuestionIndex] === i ? 'selected' : ''}" 
+                     onclick="selectAnswer(${i})">
+                    ${opt}
+                </div>
+            `).join('')}
+        </div>
+        
+        <div style="display:flex;gap:10px;">
+            ${currentQuestionIndex > 0 ? 
+                '<button class="btn btn-secondary" onclick="prevQuestion()">← Назад</button>' : ''}
+            <button class="btn btn-primary" onclick="nextQuestion()">
+                ${currentQuestionIndex < test.questions.length - 1 ? 'Далее →' : 'Завершить тест ✓'}
+            </button>
+        </div>
+    `;
+}
+ 
+function selectAnswer(index) {
+    userAnswers[currentQuestionIndex] = index;
+    showQuestion();
+}
+ 
+function nextQuestion() {
+    if (userAnswers[currentQuestionIndex] === undefined) {
+        showToast('❌ Выберите вариант ответа');
+        return;
+    }
+    
+    const test = testDatabase[currentTest];
+    
+    if (currentQuestionIndex < test.questions.length - 1) {
+        currentQuestionIndex++;
+        showQuestion();
+    } else {
+        finishTest();
+    }
+}
+ 
+function prevQuestion() {
+    if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        showQuestion();
+    }
+}
+ 
+function startTimer() {
+    if (testTimer) clearInterval(testTimer);
+    
+    const timerDisplay = document.createElement('div');
+    timerDisplay.className = 'test-timer';
+    timerDisplay.id = 'timerDisplay';
+    document.getElementById('testTitle').after(timerDisplay);
+    
+    let seconds = 0;
+    testTimer = setInterval(() => {
+        seconds++;
+        const min = Math.floor(seconds / 60);
+        const sec = seconds % 60;
+        document.getElementById('timerDisplay').textContent = 
+            `⏱ ${min}:${sec.toString().padStart(2, '0')}`;
+    }, 1000);
+}
+ 
+function finishTest() {
+    if (testTimer) clearInterval(testTimer);
+    
+    const test = testDatabase[currentTest];
+    let correctCount = 0;
+    const results = [];
+    
+    test.questions.forEach((q, i) => {
+        const isCorrect = userAnswers[i] === q.correct;
+        if (isCorrect) correctCount++;
+        results.push({
+            question: q.question,
+            userAnswer: q.options[userAnswers[i]] || 'Нет ответа',
+            correctAnswer: q.options[q.correct],
+            isCorrect: isCorrect
+        });
+    });
+    
+    const score = Math.round((correctCount / test.questions.length) * 100);
+    const timeSpent = Math.floor((Date.now() - testStartTime) / 1000);
+    const minutes = Math.floor(timeSpent / 60);
+    const seconds = timeSpent % 60;
+    
+    // Сохраняем результат
+    if (currentUser) {
+        const users = getUsers();
+        const userIndex = users.findIndex(u => u.email === currentUser.email);
+        if (userIndex !== -1) {
+            if (!users[userIndex].testResults) users[userIndex].testResults = [];
+            users[userIndex].testResults.push({
+                test: currentTest,
+                score: score,
+                correct: correctCount,
+                total: test.questions.length,
+                date: new Date().toISOString(),
+                time: timeSpent
+            });
+            saveUsers(users);
+        }
+    }
+    
+    const container = document.getElementById('testQuestions');
+    container.classList.add('hidden');
+    
+    const resultsDiv = document.getElementById('testResults');
+    resultsDiv.classList.remove('hidden');
+    
+    let grade, gradeColor;
+    if (score >= 90) { grade = '🏆 Отлично!'; gradeColor = '#4caf50'; }
+    else if (score >= 70) { grade = '👍 Хорошо'; gradeColor = '#2196F3'; }
+    else if (score >= 50) { grade = '📚 Удовлетворительно'; gradeColor = '#FF9800'; }
+    else { grade = '📖 Нужно подучиться'; gradeColor = '#f44336'; }
+    
+    resultsDiv.innerHTML = `
+        <div class="test-results">
+            <h3>📊 Результаты теста</h3>
+            <h2 style="color:${gradeColor};">${test.title}</h2>
+            
+            <div class="test-score" style="color:${gradeColor};">${correctCount}/${test.questions.length}</div>
+            <p style="font-size:1.5rem;color:${gradeColor};">${score}% — ${grade}</p>
+            
+            <p style="color:#666;">⏱ Время: ${minutes}:${seconds.toString().padStart(2, '0')}</p>
+            
+            ${score >= 70 ? `
+                <div class="certificate">
+                    <h3>🏅 Сертификат участника</h3>
+                    <p>Настоящим подтверждается, что</p>
+                    <h2>${currentUser ? currentUser.name : 'Участник'}</h2>
+                    <p>успешно прошел(ла) тест</p>
+                    <h3>"${test.title}"</h3>
+                    <p>с результатом <strong>${score}%</strong> (${correctCount} из ${test.questions.length})</p>
+                    <p style="font-size:0.8rem;color:#999;">
+                        Дата: ${new Date().toLocaleDateString('ru-RU')} | 
+                        Время: ${minutes}:${seconds.toString().padStart(2, '0')}
+                    </p>
+                    <button class="btn btn-success" onclick="downloadCertificate()" style="margin-top:15px;">
+                        📥 Скачать сертификат
+                    </button>
+                </div>
+            ` : ''}
+            
+            <div style="margin-top:20px;text-align:left;">
+                <h4>📝 Детальные результаты:</h4>
+                ${results.map((r, i) => `
+                    <div style="margin:10px 0;padding:10px;border-left:4px solid ${r.isCorrect ? '#4caf50' : '#f44336'};background:${r.isCorrect ? '#f1f8e9' : '#fce4ec'};border-radius:5px;">
+                        <p><strong>${i+1}. ${r.question}</strong></p>
+                        <p>${r.isCorrect ? '✅' : '❌'} Ваш ответ: ${r.userAnswer}</p>
+                        ${!r.isCorrect ? `<p>✅ Правильный: ${r.correctAnswer}</p>` : ''}
+                    </div>
+                `).join('')}
+            </div>
+            
+            <div style="display:flex;gap:10px;margin-top:20px;">
+                <button class="btn btn-primary" onclick="retakeTest()">🔄 Пройти заново</button>
+                <button class="btn btn-secondary" onclick="backToTestSelection()">📋 Другие тесты</button>
+            </div>
+        </div>
+    `;
+}
+ 
+function downloadCertificate() {
+    const certificate = document.querySelector('.certificate');
+    if (!certificate) return;
+    
+    // Создаём canvas для сертификата
+    const canvas = document.createElement('canvas');
+    canvas.width = 800;
+    canvas.height = 600;
+    const ctx = canvas.getContext('2d');
+    
+    // Фон
+    ctx.fillStyle = '#fff9c4';
+    ctx.fillRect(0, 0, 800, 600);
+    
+    // Рамка
+    ctx.strokeStyle = '#ffd966';
+    ctx.lineWidth = 10;
+    ctx.strokeRect(20, 20, 760, 560);
+    
+    // Текст
+    ctx.fillStyle = '#1e4a2f';
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 36px Arial';
+    ctx.fillText('🏅 СЕРТИФИКАТ', 400, 100);
+    
+    ctx.font = '20px Arial';
+    ctx.fillText('Настоящим подтверждается, что', 400, 170);
+    
+    ctx.font = 'bold 30px Arial';
+    ctx.fillText(currentUser ? currentUser.name : 'Участник', 400, 230);
+    
+    ctx.font = '20px Arial';
+    ctx.fillText('успешно прошел(ла) тест', 400, 280);
+    
+    const test = testDatabase[currentTest];
+    ctx.font = 'bold 24px Arial';
+    ctx.fillText(test.title, 400, 330);
+    
+    const score = Math.round((userAnswers.filter((a, i) => a === test.questions[i].correct).length / test.questions.length) * 100);
+    ctx.font = '20px Arial';
+    ctx.fillText(`с результатом ${score}%`, 400, 380);
+    
+    ctx.font = '16px Arial';
+    ctx.fillText(`Дата: ${new Date().toLocaleDateString('ru-RU')}`, 400, 440);
+    ctx.fillText('Экокультура 2026', 400, 480);
+    
+    // Скачивание
+    const link = document.createElement('a');
+    link.download = `сертификат_${currentTest}_${Date.now()}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    
+    showToast('📥 Сертификат сохранён!');
+}
+ 
+function retakeTest() {
+    document.getElementById('testResults').classList.add('hidden');
+    document.getElementById('testSelection').classList.remove('hidden');
+    startTest(currentTest);
+}
+ 
+function backToTestSelection() {
+    document.getElementById('testResults').classList.add('hidden');
+    document.getElementById('testQuestions').classList.add('hidden');
+    document.getElementById('testSelection').classList.remove('hidden');
+    document.getElementById('testTitle').textContent = 'Выберите тест';
+    if (testTimer) clearInterval(testTimer);
+    const timerDisplay = document.getElementById('timerDisplay');
+    if (timerDisplay) timerDisplay.remove();
+}
+ 
+function scrollToTests() {
+    document.getElementById('tests').scrollIntoView({ behavior: 'smooth' });
+}
+ 
+function scrollToLessons() {
+    document.getElementById('lessons').scrollIntoView({ behavior: 'smooth' });
+}
+ 
+// ============ ЧАТ ============
+const ecoKnowledge = {
+    'привет': 'Здравствуйте! Я ваш эко-ассистент. Спросите меня об экологии, переработке или устойчивом развитии! 🌍',
+    'как дела': 'Отлично! Готов помогать с вопросами об экологии. Спрашивайте! 🌿',
+    'спасибо': 'Пожалуйста! Рад помочь. Берегите природу! 💚',
+    'пока': 'До свидания! Помните: каждый может помочь планете! 🌱',
+    'сортировка мусора': '♻️ Разделяйте отходы: пластик, стекло, бумагу, металл — в переработку. Органику — в компост. Батарейки и лампы — в спецпункты!',
+    'пластик': '🥤 Ежегодно производят 380 млн тонн пластика, перерабатывают лишь 9%. Откажитесь от одноразового: многоразовые сумки, бутылки, контейнеры.',
+    'климат': '🌡️ Изменение климата вызвано выбросами CO2. Решения: возобновляемая энергия, энергоэффективность, сокращение потребления мяса.',
+    'вода': '💧 Пресная вода — 2.5% от всей воды Земли. Экономьте: душ вместо ванны, закрывайте кран при чистке зубов.',
+    'энергия': '💡 LED-лампы экономят 80% энергии. Выключайте свет, используйте солнечные панели!',
+    'лес': '🌲 Леса поглощают 2.6 млрд тонн CO2 в год. Сажайте деревья, экономьте бумагу!',
+    'экология': '🌍 Экология — наука о взаимодействии организмов с окружающей средой. Заботьтесь о природе!',
+    'тест': '📝 У нас есть 4 теста: Основы экологии, Переработка отходов, Изменение климата и Водные ресурсы. Войдите в аккаунт и проверьте свои знания!'
+};
+ 
+function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+    
+    const messages = document.getElementById('chatMessages');
+    
+    const userMsg = document.createElement('div');
+    userMsg.className = 'message user';
+    userMsg.textContent = text;
+    messages.appendChild(userMsg);
+    
+    input.value = '';
+    
+    setTimeout(() => {
+        const botMsg = document.createElement('div');
+        botMsg.className = 'message bot';
+        
+        const msg = text.toLowerCase();
+        let reply = '🤔 Извините, я не совсем понял. Спросите про сортировку, климат, воду, энергию или тесты!';
+        
+        for (let key in ecoKnowledge) {
+            if (msg.includes(key)) {
+                reply = ecoKnowledge[key];
+                break;
+            }
+        }
+        
+        botMsg.textContent = reply;
+        messages.appendChild(botMsg);
+        messages.scrollTop = messages.scrollHeight;
+    }, 600);
+    
+    messages.scrollTop = messages.scrollHeight;
+}
+ 
+function toggleChat() {
+    document.getElementById('chatWindow').classList.toggle('open');
+}
+ 
+// ============ ТОСТЫ ============
+function showToast(msg) {
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.remove(); }, 3000);
+}
+ 
+// ============ ИНИЦИАЛИЗАЦИЯ ============
+initAdmin();
+loadCurrentUser();
+renderLessons();
+ 
+window.addEventListener('click', (e) => {
+    if (e.target.classList.contains('modal')) {
+        e.target.classList.remove('open');
+    }
+});
+ 
+console.log('🌍 Экокультура 2026 - сайт запущен!');
+console.log('📝 Тесты работают: 4 теста по 10 вопросов');
+console.log('👥 Регистрация пользователей работает');
+console.log('🔐 Пароли хранятся в зашифрованном виде');
+console.log('💬 Чат-ассистент готов');
+</script>
+ 
+</body>
+</html>
